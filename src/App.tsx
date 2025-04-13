@@ -1,18 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-import { Toaster as Sonner } from "./components/ui/sonner";
-//pages
-import Login from "./pages/login";
-import Signup from "./pages/signup";
+import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "./context/ThemeContext";
+import { AuthContextProvider } from "./context/AuthContext";
+import { Toaster } from "sonner";
+import AppRoutes from "./Routes";
+
 function App() {
   return (
     <>
-      <Sonner />
-      <Routes>
-        <Route path="/home" element={<div>Home</div>} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<div>404 Not Found</div>} />
-      </Routes>
+      <ThemeProvider>
+        <BrowserRouter>
+          <AuthContextProvider>
+            <Toaster position="top-right" />
+            <AppRoutes />
+          </AuthContextProvider>
+        </BrowserRouter>
+      </ThemeProvider>
     </>
   );
 }

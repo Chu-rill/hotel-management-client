@@ -1,19 +1,9 @@
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
-
 import { Button } from "../components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
 import {
   Form,
   FormControl,
@@ -23,53 +13,90 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
-import useLogin from "../hooks/useLogin";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Loader2 } from "lucide-react";
+import useSignup from "../hooks/useSignup";
+import { ThemeToggle } from "../components/ThemeToggle";
 
-const formSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Please enter a valid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
-const Login = () => {
-  // const navigate = useNavigate();
-  const { loading, login } = useLogin();
+const Signup = () => {
+  const navigate = useNavigate();
+  const { loading, signup } = useSignup();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await login(values);
-      // navigate("/home");
-      toast.success("Login successful!");
+      await signup({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+      navigate("/login");
     } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Invalid credentials or network error.");
+      console.error("Signup error:", error);
+      // Toast is shown via axios interceptor
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-muted">
-      <div className="w-full max-w-md h-full bg-purple-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100">
-        <Card className="shadow-xl ">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 drk:bg-black">
+      <div className="w-full max-w-md">
+        <Card className=" bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-serif text-primary">
-              Welcome Back
+            <CardTitle className="text-3xl font-serif text-hotel-navy">
+              Create Account
             </CardTitle>
-            <CardDescription>Sign in to access your account</CardDescription>
+            <CardDescription>
+              Sign up to start booking your stay
+            </CardDescription>
           </CardHeader>
-
           <CardContent>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>User Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="email"
@@ -86,6 +113,7 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -103,6 +131,7 @@ const Login = () => {
                     </FormItem>
                   )}
                 />
+
                 <Button
                   type="submit"
                   className="w-full bg-green-500 hover:bg-green-600 text-white"
@@ -111,26 +140,25 @@ const Login = () => {
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Signing in...
+                      Creating Account...
                     </>
                   ) : (
-                    "Sign In"
+                    "Sign Up"
                   )}
                 </Button>
               </form>
             </Form>
           </CardContent>
-
-          <CardFooter className="flex flex-col items-center space-y-2">
-            <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
+          <CardFooter className="flex flex-col space-y-4">
+            <div className="text-sm text-center text-gray-500">
+              Already have an account?{" "}
               <Link
-                to="/signup"
-                className="text-primary font-medium hover:underline"
+                to="/login"
+                className="text-hotel-navy font-medium hover:underline"
               >
-                Sign up now
+                Sign in
               </Link>
-            </p>
+            </div>
           </CardFooter>
         </Card>
       </div>
@@ -138,4 +166,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
