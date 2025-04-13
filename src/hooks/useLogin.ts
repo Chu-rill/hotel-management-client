@@ -16,8 +16,8 @@ const useLogin = () => {
     try {
       const response = await axios.post("users/login", credentials);
       if (response.data.token) {
-        localStorage.setItem("hotel_token", response.data.token);
-        localStorage.setItem("hotel_user", JSON.stringify(response.data.user));
+        localStorage.setItem("user_token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         setAuthUser(response.data.user);
       }
       return response.data;

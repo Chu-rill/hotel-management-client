@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,7 +23,7 @@ import {
   FormMessage,
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
-import useLogin from "../api/useLogin";
+import useLogin from "../hooks/useLogin";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -32,11 +31,8 @@ const formSchema = z.object({
 });
 
 const Login = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const navigate = useNavigate();
   const { loading, login } = useLogin();
-  const from = location.state?.from || "/";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,22 +43,20 @@ const Login = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
     try {
       await login(values);
-      navigate(from);
+      // navigate("/home");
+      toast.success("Login successful!");
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Invalid credentials or network error.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-muted">
-      <div className="w-full max-w-md">
-        <Card className="shadow-xl">
+      <div className="w-full max-w-md h-full bg-purple-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 border border-gray-100">
+        <Card className="shadow-xl ">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-serif text-primary">
               Welcome Back
@@ -111,10 +105,10 @@ const Login = () => {
                 />
                 <Button
                   type="submit"
-                  className="w-full"
-                  disabled={isSubmitting}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white"
+                  disabled={loading}
                 >
-                  {isSubmitting ? (
+                  {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Signing in...
