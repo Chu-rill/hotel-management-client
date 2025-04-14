@@ -14,11 +14,11 @@ const useLogin = () => {
   const login = async (credentials: LoginCredentials) => {
     setLoading(true);
     try {
-      const response = await axios.post("users/login", credentials);
+      const response = await axios.post("auth/login", credentials);
       if (response.data.token) {
         localStorage.setItem("user_token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        setAuthUser(response.data.user);
+        localStorage.setItem("user", JSON.stringify(response.data.data));
+        setAuthUser(response.data.data);
       }
       return response.data;
     } catch (error) {

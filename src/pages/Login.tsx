@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ const formSchema = z.object({
 const Login = () => {
   const { loading, login } = useLogin();
   const [showPassword, setShowPassword] = useState(true);
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,6 +53,7 @@ const Login = () => {
     try {
       await login(values);
       toast.success("Login successful!");
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Invalid credentials or network error.");

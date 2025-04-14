@@ -15,8 +15,8 @@ const useSignup = () => {
     setLoading(true);
     try {
       const data = await axios.post("/auth/signup", userData);
-      console.log("Signup response:", data);
-      return data;
+      console.log("Signup response:", data.data);
+      return data.data;
     } catch (error) {
       console.error("Signup error:", error);
       throw error;

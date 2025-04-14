@@ -54,7 +54,7 @@ const Signup = () => {
         password: values.password,
       });
 
-      sessionStorage.setItem("otpEmail", res.data.data.email);
+      sessionStorage.setItem("otpEmail", res.data.email);
       setTimeout(() => {
         sessionStorage.removeItem("otpEmail");
       }, 5 * 60 * 1000); // 5 minutes
