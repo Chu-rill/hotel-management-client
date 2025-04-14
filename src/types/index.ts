@@ -49,3 +49,15 @@ export interface BookingData {
   checkOut: string;
   totalPrice: number;
 }
+
+export interface SignupResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    id: string;
+    username: string;
+    email: string;
+    phone?: string;
+    role: string;
+  } | null;
+}

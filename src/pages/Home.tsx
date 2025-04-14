@@ -14,6 +14,7 @@ import {
   SelectContent,
   SelectItem,
 } from "../components/ui/select";
+import Navbar from "../components/NavBar";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -24,12 +25,14 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-hotel-cream">
+      {/* Navbar */}
+      <Navbar />
       {/* Hero Section */}
       <div className="flex items-center justify-center bg-hotel-navy text-white py-20">
         <Card className="max-w-4xl w-full p-6 shadow-xl bg-transparent">
           <CardHeader className="text-center">
             <CardTitle className="text-4xl font-serif">
-              Welcome to Our Hotel
+              Welcome to InnkeeperPro
             </CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-4">

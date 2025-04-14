@@ -8,18 +8,32 @@ import {
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { toast } from "sonner";
+import useOtp from "../hooks/useOtp"; // Adjust path as needed
+import { Link } from "react-router-dom";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState<string>("");
+  const email = sessionStorage.getItem("otpEmail"); // get from session
+  const { loading, otp: validateOtp } = useOtp();
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
+    if (!email) {
+      toast.error("Email session expired. Please sign up again.");
+      return;
+    }
     if (otp.length !== 6) {
       toast.error("Please enter a valid 6-digit OTP");
       return;
     }
 
-    // Replace with real backend verification
-    toast.success(`OTP ${otp} verified successfully!`);
+    try {
+      const result = await validateOtp({ email, OTP: otp });
+      toast.success("OTP verified successfully!");
+      // Optionally redirect or update auth state
+      console.log("OTP result:", result);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Invalid OTP");
+    }
   };
 
   return (
@@ -50,11 +64,17 @@ const OtpPage = () => {
           <Button
             className="w-full"
             onClick={handleVerify}
-            disabled={otp.length < 6}
+            disabled={otp.length < 6 || loading}
           >
-            Verify OTP
+            {loading ? "Verifying..." : "Verify OTP"}
           </Button>
         </CardContent>
+        <Link
+          to="/resend-otp"
+          className="text-hotel-navy font-medium hover:underline"
+        >
+          Resend OTP
+        </Link>
       </Card>
     </div>
   );

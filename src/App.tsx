@@ -10,7 +10,7 @@ function App() {
       <ThemeProvider>
         <BrowserRouter>
           <AuthContextProvider>
-            <Toaster position="top-right" />
+            <Toaster position="top-center" />
             <AppRoutes />
           </AuthContextProvider>
         </BrowserRouter>

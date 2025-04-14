@@ -4,6 +4,7 @@ import HomePage from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import OtpPage from "./pages/Otp";
+import ResendOtpPage from "./pages/ResendOtpPage";
 import NotFoundPage from "./pages/NotFound";
 function AppRoutes() {
   return (
@@ -12,6 +13,7 @@ function AppRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/otp" element={<OtpPage />} />
+        <Route path="/resend-otp" element={<ResendOtpPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

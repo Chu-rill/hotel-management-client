@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 // Create axios instance
-const API_URL = "https://hotel-management-server-nu.vercel.app/api/";
+const API_URL = "http://localhost:3000/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 // Request interceptor for adding auth token
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("hotel_token");
+    const token = localStorage.getItem("user_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -34,8 +34,8 @@ axiosInstance.interceptors.response.use(
 
     // Handle token expiration
     if (error.response?.status === 401) {
-      localStorage.removeItem("hotel_token");
-      localStorage.removeItem("hotel_user");
+      localStorage.removeItem("user_token");
+      localStorage.removeItem("user");
       window.location.href = "/login";
     }
 

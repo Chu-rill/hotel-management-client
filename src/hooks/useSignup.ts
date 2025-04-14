@@ -1,8 +1,9 @@
+import { SignupResponse } from "../types";
 import axios from "./axios";
 import { useState } from "react";
 
 export interface SignupData {
-  name: string;
+  username: string;
   email: string;
   password: string;
 }
@@ -13,11 +14,14 @@ const useSignup = () => {
   const signup = async (userData: SignupData) => {
     setLoading(true);
     try {
-      const response = await axios.post("users/register", userData);
-      return response.data;
+      const data: SignupResponse = await axios.post("/auth/signup", userData);
+
+      return data;
     } catch (error) {
       console.error("Signup error:", error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
   return { loading, signup };

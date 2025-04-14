@@ -1,4 +1,3 @@
-import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,20 +22,13 @@ import {
 } from "../components/ui/card";
 import { Loader2 } from "lucide-react";
 import useSignup from "../hooks/useSignup";
-import { ThemeToggle } from "../components/ThemeToggle";
+import { toast } from "sonner";
 
-const formSchema = z
-  .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Please enter a valid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
-
+const formSchema = z.object({
+  username: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
 const Signup = () => {
   const navigate = useNavigate();
   const { loading, signup } = useSignup();
@@ -44,21 +36,29 @@ const Signup = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await signup({
-        name: values.name,
+      const res = await signup({
+        username: values.username,
         email: values.email,
         password: values.password,
       });
-      navigate("/login");
+      if (res?.data) {
+        sessionStorage.setItem("otpEmail", res.data.email);
+        setTimeout(() => {
+          sessionStorage.removeItem("otpEmail");
+        }, 5 * 60 * 1000); // 5 minutes
+        toast.success(
+          "Account created successfully! Please verify your email."
+        );
+        navigate("/otp");
+      }
     } catch (error) {
       console.error("Signup error:", error);
       // Toast is shown via axios interceptor
@@ -85,7 +85,7 @@ const Signup = () => {
               >
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="username"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>User Name</FormLabel>
