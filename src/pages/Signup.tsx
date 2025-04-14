@@ -53,16 +53,13 @@ const Signup = () => {
         email: values.email,
         password: values.password,
       });
-      if (res?.data) {
-        sessionStorage.setItem("otpEmail", res.data.email);
-        setTimeout(() => {
-          sessionStorage.removeItem("otpEmail");
-        }, 5 * 60 * 1000); // 5 minutes
-        toast.success(
-          "Account created successfully! Please verify your email."
-        );
-        navigate("/otp");
-      }
+
+      sessionStorage.setItem("otpEmail", res.data.data.email);
+      setTimeout(() => {
+        sessionStorage.removeItem("otpEmail");
+      }, 5 * 60 * 1000); // 5 minutes
+      toast.success("Account created successfully! Please verify your email.");
+      navigate("/otp");
     } catch (error) {
       console.error("Signup error:", error);
       // Toast is shown via axios interceptor

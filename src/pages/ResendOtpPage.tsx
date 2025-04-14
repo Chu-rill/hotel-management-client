@@ -4,6 +4,7 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { toast } from "sonner";
 import axios from "../hooks/axios"; // Adjust path based on your project
+import { Link } from "react-router-dom";
 
 const ResendOtpPage = () => {
   const [email, setEmail] = useState("");
@@ -60,6 +61,9 @@ const ResendOtpPage = () => {
               : "Resend OTP"}
           </Button>
         </CardContent>
+        <Link to="/otp" className="text-hotel-navy font-medium hover:underline">
+          Verify OTP
+        </Link>
       </Card>
     </div>
   );

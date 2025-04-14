@@ -9,12 +9,13 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { toast } from "sonner";
 import useOtp from "../hooks/useOtp"; // Adjust path as needed
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState<string>("");
   const email = sessionStorage.getItem("otpEmail"); // get from session
   const { loading, otp: validateOtp } = useOtp();
+  const navigate = useNavigate();
 
   const handleVerify = async () => {
     if (!email) {
@@ -27,10 +28,11 @@ const OtpPage = () => {
     }
 
     try {
-      const result = await validateOtp({ email, OTP: otp });
+      await validateOtp({ email, OTP: otp });
       toast.success("OTP verified successfully!");
       // Optionally redirect or update auth state
-      console.log("OTP result:", result);
+      sessionStorage.removeItem("otpEmail"); // Clear session after use
+      navigate("/");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Invalid OTP");
     }

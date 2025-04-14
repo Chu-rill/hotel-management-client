@@ -59,5 +59,5 @@ export interface SignupResponse {
     email: string;
     phone?: string;
     role: string;
-  } | null;
+  };
 }

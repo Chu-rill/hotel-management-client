@@ -1,4 +1,4 @@
-import { SignupResponse } from "../types";
+// import { SignupResponse } from "../types";
 import axios from "./axios";
 import { useState } from "react";
 
@@ -14,8 +14,8 @@ const useSignup = () => {
   const signup = async (userData: SignupData) => {
     setLoading(true);
     try {
-      const data: SignupResponse = await axios.post("/auth/signup", userData);
-
+      const data = await axios.post("/auth/signup", userData);
+      console.log("Signup response:", data);
       return data;
     } catch (error) {
       console.error("Signup error:", error);
