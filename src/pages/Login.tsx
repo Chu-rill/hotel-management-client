@@ -4,7 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Loader2, Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
-
+import { FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash } from "react-icons/fa6";
 import { Button } from "../components/ui/button";
 import {
   Card,
@@ -24,6 +25,7 @@ import {
 } from "../components/ui/form";
 import { Input } from "../components/ui/input";
 import useLogin from "../hooks/useLogin";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -32,6 +34,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const { loading, login } = useLogin();
+  const [showPassword, setShowPassword] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,6 +43,10 @@ const Login = () => {
       password: "",
     },
   });
+
+  const toggleShow = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -99,7 +106,7 @@ const Login = () => {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative">
                       <FormLabel className="text-gray-200 dark:text-gray-200 light:text-gray-700">
                         Password
                       </FormLabel>
@@ -107,13 +114,24 @@ const Login = () => {
                         <div className="relative">
                           <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                           <Input
-                            type="password"
+                            type={showPassword ? "password" : "text"}
                             placeholder="••••••••"
                             className="pl-10 bg-black/30 dark:bg-black/30 light:bg-white border-gray-600 dark:border-gray-600 light:border-gray-300 focus:border-primary text-white dark:text-white light:text-gray-900 transition-colors duration-300"
                             {...field}
                           />
                         </div>
                       </FormControl>
+                      {showPassword ? (
+                        <FaRegEyeSlash
+                          className=" absolute right-4 top-[50%] w-6 h-6  hover:cursor-pointer"
+                          onClick={toggleShow}
+                        />
+                      ) : (
+                        <FaRegEye
+                          className=" absolute right-4 top-[50%] w-6 h-6  hover:cursor-pointer"
+                          onClick={toggleShow}
+                        />
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}

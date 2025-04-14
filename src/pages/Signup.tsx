@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash } from "react-icons/fa6";
 import { Button } from "../components/ui/button";
 import {
   Form,
@@ -23,6 +25,7 @@ import {
 import { Loader2 } from "lucide-react";
 import useSignup from "../hooks/useSignup";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,6 +35,7 @@ const formSchema = z.object({
 const Signup = () => {
   const navigate = useNavigate();
   const { loading, signup } = useSignup();
+  const [showPassword, setShowPassword] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,6 +67,10 @@ const Signup = () => {
       console.error("Signup error:", error);
       // Toast is shown via axios interceptor
     }
+  };
+
+  const toggleShow = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -118,15 +126,26 @@ const Signup = () => {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="relative">
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
-                          type="password"
+                          type={showPassword ? "password" : "text"}
                           placeholder="••••••••"
                           {...field}
                         />
                       </FormControl>
+                      {showPassword ? (
+                        <FaRegEyeSlash
+                          className=" absolute right-4 top-[50%] w-6 h-6  hover:cursor-pointer"
+                          onClick={toggleShow}
+                        />
+                      ) : (
+                        <FaRegEye
+                          className=" absolute right-4 top-[50%] w-6 h-6  hover:cursor-pointer"
+                          onClick={toggleShow}
+                        />
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}
