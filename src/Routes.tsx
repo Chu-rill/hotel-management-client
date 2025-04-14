@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 //pages
 import HomePage from "./pages/Home";
 import Login from "./pages/Login";
@@ -6,15 +6,32 @@ import Signup from "./pages/Signup";
 import OtpPage from "./pages/Otp";
 import ResendOtpPage from "./pages/ResendOtpPage";
 import NotFoundPage from "./pages/NotFound";
+import { useAuthContext } from "./context/AuthContext";
 function AppRoutes() {
+  const { authUser } = useAuthContext();
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/otp" element={<OtpPage />} />
-        <Route path="/resend-otp" element={<ResendOtpPage />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={authUser ? <HomePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/signup"
+          element={authUser ? <Navigate to="/" /> : <Signup />}
+        />
+        <Route
+          path="/otp"
+          element={authUser ? <Navigate to="/" /> : <OtpPage />}
+        />
+        <Route
+          path="/resend-otp"
+          element={authUser ? <Navigate to="/" /> : <ResendOtpPage />}
+        />
+        <Route
+          path="/login"
+          element={authUser ? <Navigate to="/" /> : <Login />}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

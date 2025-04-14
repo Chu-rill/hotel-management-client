@@ -11,8 +11,7 @@ import {
 // 1. Define your user type structure
 export interface AuthUser {
   id: string;
-  name: string;
-  email: string;
+  userName: string;
   // Add more fields if your user object has more properties
 }
 

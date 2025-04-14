@@ -61,3 +61,18 @@ export interface SignupResponse {
     role: string;
   };
 }
+
+export interface Hotel {
+  id: string;
+  name: string;
+  address: string;
+  description: string;
+  city: string;
+  country: string;
+  rating: number;
+  phone: string;
+  email: string;
+  priceRange?: string;
+  imageUrl?: string;
+  amenities?: string[];
+}
