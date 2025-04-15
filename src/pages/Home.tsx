@@ -146,7 +146,7 @@ const HomePage = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-gray-600">{hotel.description}</p>
+                    <p className="text-white">{hotel.description}</p>
                     {hotel.amenities && (
                       <div className="mt-4">
                         <p className="font-medium mb-1">Amenities:</p>

@@ -70,6 +70,6 @@ export interface Hotel {
   phone: string;
   email: string;
   priceRange?: string;
-  imageUrl?: string;
+  imageUrl: string;
   amenities?: string[];
 }

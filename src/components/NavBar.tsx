@@ -23,10 +23,10 @@ const Navbar = () => {
             Rooms
           </Link>
           <Link
-            to="/booking"
+            to="/about"
             className="hover:text-hotel-cream text-black dark:text-white"
           >
-            Booking
+            About
           </Link>
           <Link
             to="/contact"

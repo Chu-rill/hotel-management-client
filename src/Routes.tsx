@@ -7,6 +7,8 @@ import OtpPage from "./pages/Otp";
 import ResendOtpPage from "./pages/ResendOtpPage";
 import NotFoundPage from "./pages/NotFound";
 import HotelDetailsPage from "./pages/Hotel";
+import ContactPage from "./pages/Contact";
+import AboutPage from "./pages/AboutPage";
 import { useAuthContext } from "./context/AuthContext";
 function AppRoutes() {
   const { authUser } = useAuthContext();
@@ -34,8 +36,16 @@ function AppRoutes() {
           element={authUser ? <Navigate to="/" /> : <Login />}
         />
         <Route
+          path="/contact"
+          element={authUser ? <ContactPage /> : <Navigate to="/login" />}
+        />
+        <Route
           path="/hotel/:hotelId"
           element={authUser ? <HotelDetailsPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/about"
+          element={authUser ? <AboutPage /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

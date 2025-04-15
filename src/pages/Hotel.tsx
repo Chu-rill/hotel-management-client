@@ -120,7 +120,7 @@ const HotelDetailsPage = () => {
     .filter(Boolean)
     .join(", ");
 
-  console.log({ hotel, rooms });
+  console.log({ hotel });
 
   return (
     <div className="min-h-screen bg-hotel-cream">
@@ -178,7 +178,7 @@ const HotelDetailsPage = () => {
                 <CardTitle>About {hotel.name}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 leading-relaxed mb-6">
+                <p className="text-white leading-relaxed mb-6">
                   {hotel.description || "No description available."}
                 </p>
 
