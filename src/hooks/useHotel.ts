@@ -7,7 +7,7 @@ export interface UseHotelReturn {
   loading: boolean;
   error: string | null;
   fetchHotels: () => Promise<void>;
-  fetchHotelById: (id: number) => Promise<Hotel | null>;
+  fetchHotelById: (id: string | undefined) => Promise<Hotel | null>;
   //   searchHotels: (query: string, priceRange?: string) => Promise<void>;
 }
 
@@ -30,7 +30,9 @@ export const useHotel = (): UseHotelReturn => {
     }
   };
 
-  const fetchHotelById = async (id: number): Promise<Hotel | null> => {
+  const fetchHotelById = async (
+    id: string | undefined
+  ): Promise<Hotel | null> => {
     try {
       setLoading(true);
       const response = await axios.get(`/hotels/${id}`);
