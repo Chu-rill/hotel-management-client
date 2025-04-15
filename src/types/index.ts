@@ -8,18 +8,15 @@ export interface User {
 }
 
 export interface Room {
-  _id: string;
-  title: string;
+  id: string;
+  roomNumber: string;
+  roomtype: string;
   price: number;
-  maxPeople: number;
-  desc: string;
-  roomNumbers: RoomNumber[];
+  status: string;
+  hotel: any; // You might want to define a more specific Hotel type
+  amenity: any[]; // You might want to define a more specific Amenity type
   images: string[];
-  features: string[];
-  createdAt: string;
-  updatedAt: string;
 }
-
 export interface RoomNumber {
   _id: string;
   number: number;

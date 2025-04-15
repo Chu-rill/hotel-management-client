@@ -6,6 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -17,28 +18,36 @@ import {
 } from "../components/ui/tabs";
 import Navbar from "../components/NavBar";
 import useHotel from "../hooks/useHotel";
-import { string } from "zod";
-import { Hotel } from "../types";
+import useRoom from "../hooks/useRoom";
+import { Hotel, Room } from "../types";
 
 const HotelDetailsPage = () => {
   const { hotelId } = useParams();
   const navigate = useNavigate();
   const { fetchHotelById } = useHotel();
+  const { fetchRoomsByHotelId } = useRoom();
   const [hotel, setHotel] = useState<Hotel | null>(null);
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // We'll use hotel.imageUrl as the selected image since we don't have an array of images
   const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
-    const fetchHotelDetails = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
+
+        // Fetch hotel details
         const hotelData = await fetchHotelById(hotelId);
         setHotel(hotelData);
         if (hotelData?.imageUrl) {
           setSelectedImage(hotelData.imageUrl);
+        }
+
+        // Fetch rooms for this hotel
+        if (hotelId) {
+          const roomsData = await fetchRoomsByHotelId(hotelId);
+          setRooms(roomsData);
         }
       } catch (err) {
         setError("Failed to load hotel details");
@@ -49,7 +58,7 @@ const HotelDetailsPage = () => {
     };
 
     if (hotelId) {
-      fetchHotelDetails();
+      fetchData();
     }
   }, [hotelId]);
 
@@ -73,6 +82,10 @@ const HotelDetailsPage = () => {
 
   const handleGoBack = () => {
     navigate(-1);
+  };
+
+  const handleViewRoom = (roomId: string) => {
+    navigate(`/rooms/${roomId}`);
   };
 
   if (loading) {
@@ -107,6 +120,8 @@ const HotelDetailsPage = () => {
     .filter(Boolean)
     .join(", ");
 
+  console.log({ hotel, rooms });
+
   return (
     <div className="min-h-screen bg-hotel-cream">
       <Navbar />
@@ -136,8 +151,8 @@ const HotelDetailsPage = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Gallery */}
-          <div className="lg:col-span-2">
+          {/* Left Column - Gallery & Hotel Details */}
+          <div className="lg:col-span-3">
             <Card className="shadow-lg">
               <CardContent className="p-6">
                 {/* Main Image */}
@@ -209,69 +224,95 @@ const HotelDetailsPage = () => {
                 </Tabs>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Right Column - Booking Card */}
-          <div>
-            <Card className="shadow-lg sticky top-6">
-              <CardHeader>
-                <CardTitle>Book Your Stay</CardTitle>
-                <CardDescription>
-                  Best price guarantee when booking directly
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-3xl font-semibold">
-                  $$$
-                  <span className="text-lg font-normal text-gray-500 ml-2">
-                    per night
-                  </span>
-                </div>
+            {/* Available Rooms Section */}
+            <div className="mt-8">
+              <h2 className="text-2xl font-serif mb-6">Available Rooms</h2>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">
-                      Check-in Date
-                    </label>
-                    <input
-                      type="date"
-                      className="w-full p-2 border rounded"
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">
-                      Check-out Date
-                    </label>
-                    <input
-                      type="date"
-                      className="w-full p-2 border rounded"
-                      min={new Date().toISOString().split("T")[0]}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">
-                      Guests
-                    </label>
-                    <select className="w-full p-2 border rounded">
-                      <option value="1">1 Guest</option>
-                      <option value="2">2 Guests</option>
-                      <option value="3">3 Guests</option>
-                      <option value="4">4 Guests</option>
-                      <option value="5">5+ Guests</option>
-                    </select>
-                  </div>
-                </div>
+              {rooms.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {rooms.map((room) => (
+                    <Card
+                      key={room.id}
+                      className="shadow-lg transition-transform hover:scale-105"
+                    >
+                      <div className="h-48 bg-gray-200 overflow-hidden">
+                        {room.images && room.images.length > 0 ? (
+                          <img
+                            src={room.images[0]}
+                            alt={`Room ${room.roomNumber}`}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <p className="text-gray-500">No image available</p>
+                          </div>
+                        )}
+                      </div>
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <CardTitle>Room {room.roomNumber}</CardTitle>
+                          <Badge
+                            variant={
+                              room.status === "available"
+                                ? "default"
+                                : "secondary"
+                            }
+                          >
+                            {room.status}
+                          </Badge>
+                        </div>
+                        <CardDescription>{room.roomtype}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <div className="text-2xl font-semibold">
+                          ₦{room.price}
+                          <span className="text-sm font-normal text-gray-500 ml-1">
+                            per night
+                          </span>
+                        </div>
 
-                <div className="pt-4">
-                  <Button className="w-full h-12">Check Availability</Button>
+                        {room.amenity && room.amenity.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {room.amenity.slice(0, 3).map((amenity, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="bg-gray-100"
+                              >
+                                {amenity}
+                              </Badge>
+                            ))}
+                            {room.amenity.length > 3 && (
+                              <Badge variant="outline" className="bg-gray-100">
+                                +{room.amenity.length - 3} more
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </CardContent>
+                      <CardFooter className="cursor-pointer">
+                        <Button
+                          onClick={() => handleViewRoom(room.id)}
+                          className="w-full "
+                          disabled={room.status !== "available"}
+                        >
+                          {room.status === "AVAILABLE"
+                            ? "View Details"
+                            : "Not Available"}
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
                 </div>
-
-                <div className="text-sm text-gray-500 text-center mt-2">
-                  No payment required to book
+              ) : (
+                <div className="text-center py-12 bg-gray-50 rounded-lg">
+                  <p className="text-gray-500">
+                    No rooms available at this time.
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+            </div>
           </div>
         </div>
       </div>
