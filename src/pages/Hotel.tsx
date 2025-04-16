@@ -84,8 +84,8 @@ const HotelDetailsPage = () => {
     navigate(-1);
   };
 
-  const handleViewRoom = (roomId: string) => {
-    navigate(`/rooms/${roomId}`);
+  const handleViewRoom = (roomNumber: string) => {
+    navigate(`/hotels/${hotelId}/rooms/${roomNumber}`);
   };
 
   if (loading) {
@@ -120,7 +120,7 @@ const HotelDetailsPage = () => {
     .filter(Boolean)
     .join(", ");
 
-  console.log({ hotel });
+  // console.log({ hotel,room });
 
   return (
     <div className="min-h-screen bg-hotel-cream">
@@ -293,9 +293,9 @@ const HotelDetailsPage = () => {
                       </CardContent>
                       <CardFooter className="cursor-pointer">
                         <Button
-                          onClick={() => handleViewRoom(room.id)}
+                          onClick={() => handleViewRoom(room.roomNumber)}
                           className="w-full "
-                          disabled={room.status !== "available"}
+                          disabled={room.status !== "AVAILABLE"}
                         >
                           {room.status === "AVAILABLE"
                             ? "View Details"

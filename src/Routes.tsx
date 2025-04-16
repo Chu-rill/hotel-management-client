@@ -9,6 +9,7 @@ import NotFoundPage from "./pages/NotFound";
 import HotelDetailsPage from "./pages/Hotel";
 import ContactPage from "./pages/Contact";
 import AboutPage from "./pages/AboutPage";
+import RoomDetailsPage from "./pages/Room";
 import { useAuthContext } from "./context/AuthContext";
 function AppRoutes() {
   const { authUser } = useAuthContext();
@@ -46,6 +47,10 @@ function AppRoutes() {
         <Route
           path="/about"
           element={authUser ? <AboutPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/hotels/:hotelId/rooms/:roomNumber"
+          element={authUser ? <RoomDetailsPage /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

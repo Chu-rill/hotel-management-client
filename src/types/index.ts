@@ -73,3 +73,8 @@ export interface Hotel {
   imageUrl: string;
   amenities?: string[];
 }
+
+export interface BookingStatus {
+  VALID: string;
+  EXPIRED: string;
+}
