@@ -24,7 +24,7 @@ const useRoom = (): UseRoomReturnType => {
 
       try {
         const response = await axios.get(`/hotels/${hotelId}/rooms/${id}`);
-        return response.data;
+        return response.data.data;
       } catch (err) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to fetch room";
