@@ -22,7 +22,7 @@ import useBooking from "../hooks/useBooking";
 import { Room, Hotel, BookingStatus } from "../types";
 
 const RoomDetailsPage = () => {
-  const { hotelId, roomNumber } = useParams();
+  const { hotelId, id } = useParams();
   const navigate = useNavigate();
   const { fetchRoomById } = useRoom();
   const { fetchHotelById } = useHotel();
@@ -44,12 +44,12 @@ const RoomDetailsPage = () => {
       try {
         setLoading(true);
 
-        if (!hotelId || !roomNumber) {
+        if (!hotelId || !id) {
           throw new Error("Missing hotel ID or room ID");
         }
 
         // Fetch room details
-        const roomData = await fetchRoomById(roomNumber, hotelId);
+        const roomData = await fetchRoomById(id, hotelId);
         if (!roomData) {
           throw new Error("Room not found");
         }
@@ -70,7 +70,7 @@ const RoomDetailsPage = () => {
     };
 
     fetchDetails();
-  }, [hotelId, roomNumber]);
+  }, [hotelId, id]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -137,7 +137,7 @@ const RoomDetailsPage = () => {
     );
   }
 
-  console.log("Room Details:", room);
+  // console.log("Room Details:", room);
 
   return (
     <div className="min-h-screen bg-hotel-cream">
@@ -270,7 +270,7 @@ const RoomDetailsPage = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-3xl font-semibold">
-                  ${room.price}
+                  ₦{room.price}
                   <span className="text-lg font-normal text-gray-500 ml-2">
                     per night
                   </span>

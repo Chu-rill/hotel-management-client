@@ -52,7 +52,7 @@ function AppRoutes() {
           element={authUser ? <AboutPage /> : <Navigate to="/login" />}
         />
         <Route
-          path="/hotels/:hotelId/rooms/:roomNumber"
+          path="/hotels/:hotelId/rooms/:id"
           element={authUser ? <RoomDetailsPage /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFoundPage />} />
