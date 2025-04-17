@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { Button } from "../components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -45,6 +46,10 @@ const Signup = () => {
       password: "",
     },
   });
+  const API_URL = import.meta.env.VITE_API_BASE_URL;
+  const handleGoogleLogin = () => {
+    window.location.href = `${API_URL}/oauth/google`;
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -163,6 +168,20 @@ const Signup = () => {
                   )}
                 </Button>
               </form>
+              <div className="w-full">
+                <button
+                  type="button"
+                  className="flex items-center justify-center w-full mt-4 gap-3 px-4 py-2 text-sm font-medium transition-colors duration-300 border rounded-lg shadow-sm bg-white/90 hover:bg-white text-gray-900 dark:bg-black/30 dark:text-white dark:border-gray-700 cursor-pointer"
+                  onClick={() => handleGoogleLogin()}
+                >
+                  <img
+                    src="https://www.svgrepo.com/show/475656/google-color.svg"
+                    alt="Google"
+                    className="w-5 h-5"
+                  />
+                  Continue with Google
+                </button>
+              </div>
             </Form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">

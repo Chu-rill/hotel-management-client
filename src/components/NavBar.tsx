@@ -14,12 +14,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-hotel-navy text-white py-4 shadow-lg">
+    <nav className="bg-hotel-navy text-white py-4 shadow-lg mt-4">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="text-2xl font-semibold text-black dark:text-white">
           <span>InnkeeperPro</span>
         </div>
-        <div className="space-x-6 text-lg flex items-center mr-12">
+        <div className="space-x-6 text-lg flex items-center ">
           <Link
             to="/"
             className="hover:text-hotel-cream text-black dark:text-white"
@@ -47,10 +47,9 @@ const Navbar = () => {
           <div onClick={() => handleLogout()} className="cursor-pointer">
             <BiLogOut />
           </div>
-        </div>
-
-        <div className="absolute top-4 right-4">
-          <ThemeToggle />
+          <div className="flex justify-end">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </nav>

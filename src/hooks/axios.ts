@@ -2,7 +2,8 @@ import axios from "axios";
 import { toast } from "sonner";
 
 // Create axios instance
-const API_URL = "http://localhost:3000/api/v1";
+const API_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,

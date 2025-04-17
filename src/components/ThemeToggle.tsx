@@ -7,7 +7,7 @@ export const ThemeToggle = () => {
 
   return (
     <Button
-      variant="ghost"
+      // variant="ghost"
       size="icon"
       onClick={toggleTheme}
       className="rounded-full"

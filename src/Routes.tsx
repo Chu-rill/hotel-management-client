@@ -10,6 +10,7 @@ import HotelDetailsPage from "./pages/Hotel";
 import ContactPage from "./pages/Contact";
 import AboutPage from "./pages/AboutPage";
 import RoomDetailsPage from "./pages/Room";
+import OAuthRedirect from "./components/OAuthRedirect";
 import { useAuthContext } from "./context/AuthContext";
 function AppRoutes() {
   const { authUser } = useAuthContext();
@@ -28,6 +29,8 @@ function AppRoutes() {
           path="/otp"
           element={authUser ? <Navigate to="/" /> : <OtpPage />}
         />
+        <Route path="/oauth-redirect" element={<OAuthRedirect />} />
+
         <Route
           path="/resend-otp"
           element={authUser ? <Navigate to="/" /> : <ResendOtpPage />}
