@@ -11,6 +11,7 @@ import ContactPage from "./pages/Contact";
 import AboutPage from "./pages/AboutPage";
 import RoomDetailsPage from "./pages/Room";
 import OAuthRedirect from "./components/OAuthRedirect";
+import AdminDashboard from "./pages/Admin";
 import { useAuthContext } from "./context/AuthContext";
 function AppRoutes() {
   const { authUser } = useAuthContext();
@@ -54,6 +55,10 @@ function AppRoutes() {
         <Route
           path="/hotels/:hotelId/rooms/:id"
           element={authUser ? <RoomDetailsPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/admin"
+          element={authUser ? <AdminDashboard /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

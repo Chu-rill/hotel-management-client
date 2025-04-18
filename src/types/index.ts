@@ -14,8 +14,8 @@ export interface Room {
   price: number;
   status: string;
   hotel: any; // You might want to define a more specific Hotel type
-  amenity: any[]; // You might want to define a more specific Amenity type
-  images: string[];
+  amenity?: any[]; // You might want to define a more specific Amenity type
+  images?: string[];
 }
 export interface RoomNumber {
   _id: string;

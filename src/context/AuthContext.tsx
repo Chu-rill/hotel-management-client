@@ -12,6 +12,7 @@ import {
 export interface AuthUser {
   id: string;
   userName: string;
+  email: string;
   // Add more fields if your user object has more properties
 }
 

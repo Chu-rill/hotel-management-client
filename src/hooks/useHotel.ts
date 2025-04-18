@@ -8,7 +8,11 @@ export interface UseHotelReturn {
   error: string | null;
   fetchHotels: () => Promise<void>;
   fetchHotelById: (id: string | undefined) => Promise<Hotel | null>;
-  //   searchHotels: (query: string, priceRange?: string) => Promise<void>;
+  getAllHotels: () => Promise<Hotel[]>;
+  createHotel: (hotelData: Partial<Hotel>) => Promise<Hotel>;
+  updateHotel: (id: string, hotelData: Partial<Hotel>) => Promise<Hotel>;
+  deleteHotel: (id: string) => Promise<void>;
+  addImageToHotel: (id: string, image: File) => Promise<void>;
 }
 
 export const useHotel = (): UseHotelReturn => {
@@ -40,42 +44,70 @@ export const useHotel = (): UseHotelReturn => {
     } catch (err) {
       console.error(`Error fetching hotel with ID ${id}:`, err);
       setError(`Failed to fetch hotel details. Please try again later.`);
-
       return null;
     } finally {
       setLoading(false);
     }
   };
 
-  //   const searchHotels = async (
-  //     query: string,
-  //     priceRange?: string
-  //   ): Promise<void> => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-  //       const response = await axios.get(`${API_URL}/hotels/search`, {
-  //         params: { query, priceRange },
-  //       });
-  //       setHotels(response.data.data || []);
-  //     } catch (err) {
-  //       console.error("Error searching hotels:", err);
-  //       setError("Failed to search hotels. Please try again later.");
+  const getAllHotels = async (): Promise<Hotel[]> => {
+    try {
+      const response = await axios.get("/hotels");
+      return response.data.data || [];
+    } catch (err) {
+      console.error("Error fetching all hotels:", err);
+      throw new Error("Failed to fetch hotels.");
+    }
+  };
 
-  //       // Filter demo data if API fails
-  //       const filteredHotels = demoHotels.filter(
-  //         (hotel) =>
-  //           hotel.location.toLowerCase().includes(query.toLowerCase()) ||
-  //           hotel.name.toLowerCase().includes(query.toLowerCase()) ||
-  //           (priceRange && hotel.priceRange === priceRange)
-  //       );
-  //       setHotels(filteredHotels);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  const createHotel = async (hotelData: Partial<Hotel>): Promise<Hotel> => {
+    try {
+      const response = await axios.post("/admin/hotels", hotelData);
+      return response.data.data;
+    } catch (err) {
+      console.error("Error creating hotel:", err);
+      throw new Error("Failed to create hotel.");
+    }
+  };
 
-  // Fetch hotels on component mount
+  const updateHotel = async (
+    id: string,
+    hotelData: Partial<Hotel>
+  ): Promise<Hotel> => {
+    try {
+      const response = await axios.put(`/admin/hotels/${id}`, hotelData);
+      return response.data.data;
+    } catch (err) {
+      console.error(`Error updating hotel with ID ${id}:`, err);
+      throw new Error("Failed to update hotel.");
+    }
+  };
+
+  const deleteHotel = async (id: string): Promise<void> => {
+    try {
+      await axios.delete(`/admin/hotels/${id}`);
+    } catch (err) {
+      console.error(`Error deleting hotel with ID ${id}:`, err);
+      throw new Error("Failed to delete hotel.");
+    }
+  };
+
+  const addImageToHotel = async (id: string, image: File): Promise<void> => {
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+
+      await axios.post(`/hotels/${id}/images`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (err) {
+      console.error(`Error adding image to hotel with ID ${id}:`, err);
+      throw new Error("Failed to add image to hotel.");
+    }
+  };
+
   useEffect(() => {
     fetchHotels();
   }, []);
@@ -86,7 +118,11 @@ export const useHotel = (): UseHotelReturn => {
     error,
     fetchHotels,
     fetchHotelById,
-    // searchHotels,
+    getAllHotels,
+    createHotel,
+    updateHotel,
+    deleteHotel,
+    addImageToHotel,
   };
 };
 
