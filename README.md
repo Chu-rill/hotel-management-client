@@ -1,54 +1,70 @@
-# React + TypeScript + Vite
+# InnkeeperPro - Hotel Management Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+InnkeeperPro is a modern web application designed to streamline hotel bookings and room management. Built with React, TypeScript, and Vite, it offers a user-friendly interface for browsing rooms, viewing details, and making reservations.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Browse available rooms with detailed information.
+- View room amenities and availability.
+- Book rooms directly through the application.
+- Responsive design for seamless experience across devices.
+- Authentication and authorization for secure access.
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React:** A JavaScript library for building user interfaces.
+- **TypeScript:** A typed superset of JavaScript that enhances code quality and maintainability.
+- **Vite:** A fast build tool and development server for modern web projects.
+- **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
+- **Sonner:** An opinionated toast component for React.
+- **Axios:** A promise-based HTTP client for making API requests.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Prerequisites
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Before you begin, ensure you have the following installed:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Node.js (version 18 or higher)
+- npm (Node Package Manager) or yarn
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Installation
+
+Follow these steps to set up the project locally:
+
+1.  Clone the repository:
+
+    ```sh
+    git clone <repository-url>
+    ```
+
+2.  Navigate to the project directory:
+
+    ```sh
+    cd hotel-management-client
+    ```
+
+3.  Install the dependencies:
+
+    ```sh
+    npm install
+    # or
+    yarn install
+    ```
+
+## Configuration
+
+1.  Create a `.env` file in the root directory.
+2.  Add the necessary environment variables. For example:
+
+    ```
+    VITE_API_BASE_URL=your_api_base_url
+    ```
+
+## Development
+
+To start the development server, run:
+
+```sh
+npm run dev
+# or
+yarn dev
 ```

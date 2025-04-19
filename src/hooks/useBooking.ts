@@ -7,15 +7,13 @@ export interface Booking {
   checkIn: Date;
   checkOut: Date;
   status: BookingStatus;
-  customerId: number;
+  userId: string;
   roomId: string;
   hotelId: string;
-  customer?: {
+  user?: {
     id: number;
-    user?: {
-      username: string;
-      email: string;
-    };
+    username: string;
+    email: string;
   };
   room?: {
     id: string;
@@ -28,15 +26,18 @@ interface BookingCreateParams {
   checkIn: Date;
   checkOut: Date;
   status: BookingStatus;
-  customerId: number;
+  userId: string | undefined;
   roomId: string;
-  hotelId: string;
+  // hotelId: string;
 }
 
 interface UseBookingReturnType {
   fetchBookingById: (id: string) => Promise<Booking | null>;
   fetchBookingsByHotelId: (hotelId: string) => Promise<Booking[]>;
-  createBooking: (bookingData: BookingCreateParams) => Promise<Booking>;
+  createBooking: (
+    bookingData: BookingCreateParams,
+    hotelId: string
+  ) => Promise<Booking>;
   updateBooking: (
     id: string,
     bookingData: Partial<Booking>
@@ -94,12 +95,15 @@ const useBooking = (): UseBookingReturnType => {
 
   // Create a new booking
   const createBooking = useCallback(
-    async (bookingData: BookingCreateParams): Promise<Booking> => {
+    async (
+      bookingData: BookingCreateParams,
+      hotelId: string
+    ): Promise<Booking> => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await axios.post("/bookings", bookingData);
+        const response = await axios.post(`/bookings/${hotelId}`, bookingData);
         return response.data;
       } catch (err) {
         const errorMessage =

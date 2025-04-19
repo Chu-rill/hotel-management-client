@@ -15,11 +15,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
+import { useAuthContext } from "../context/AuthContext";
 import Navbar from "../components/NavBar";
 import useRoom from "../hooks/useRoom";
 import useHotel from "../hooks/useHotel";
 import useBooking from "../hooks/useBooking";
 import { Room, Hotel, BookingStatus } from "../types";
+import { toast } from "sonner";
 
 const RoomDetailsPage = () => {
   const { hotelId, id } = useParams();
@@ -27,6 +29,8 @@ const RoomDetailsPage = () => {
   const { fetchRoomById } = useRoom();
   const { fetchHotelById } = useHotel();
   const { createBooking } = useBooking();
+  const { authUser } = useAuthContext();
+  const [userData] = useState(authUser);
 
   const [room, setRoom] = useState<Room | null>(null);
   const [hotel, setHotel] = useState<Hotel | null>(null);
@@ -85,27 +89,26 @@ const RoomDetailsPage = () => {
         return;
       }
 
-      // In a real application, you would get the customerId from authentication
-      const customerId = 1; // Placeholder
-
       const bookingData = {
         checkIn: new Date(checkInDate),
         checkOut: new Date(checkOutDate),
         status: "VALID" as unknown as BookingStatus,
-        customerId,
+        userId: userData?.id,
         roomId: room.id,
-        hotelId: hotel.id,
       };
 
-      await createBooking(bookingData);
-      setBookingStatus("Booking successful!");
+      console.log("Booking Data:", bookingData);
 
+      await createBooking(bookingData, room.hotel.id);
+      setBookingStatus("Booking successful!");
+      toast.success("Booking successful!,check email for details.");
       // Clear form
       setCheckInDate("");
       setCheckOutDate("");
       setGuests("1");
     } catch (err) {
       setBookingStatus("Booking failed. Please try again.");
+      toast.error("Booking failed. Please try again.");
       console.error(err);
     }
   };
