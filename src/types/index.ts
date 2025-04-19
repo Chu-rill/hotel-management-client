@@ -3,8 +3,8 @@ export interface User {
   name: string;
   email: string;
   role: "ADMIN" | "USER";
-  createdAt: string;
-  updatedAt: string;
+  // createdAt: string;
+  // updatedAt: string;
 }
 
 export interface Room {
