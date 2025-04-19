@@ -1,7 +1,7 @@
 // RoomsList.tsx
 import React, { useState, useEffect } from "react";
 import useRoom from "../hooks/useRoom";
-import { useHotel } from "../hooks/useHotel";
+// import { useHotel } from "../hooks/useHotel";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import {
@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { Hotel, Room } from "../types/index";
+import { toast } from "sonner";
 
 interface RoomsListProps {
   hotels: Hotel[];
@@ -24,8 +25,7 @@ const RoomsList: React.FC<RoomsListProps> = ({
   selectedHotelId,
   onHotelSelected,
 }) => {
-  const { fetchRoomsByHotelId, deleteRoom } = useRoom();
-  const { addImageToHotel } = useHotel();
+  const { fetchRoomsByHotelId, deleteRoom, addImageToRoom } = useRoom();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [image, setImage] = useState<File | null>(null);
 
@@ -41,9 +41,13 @@ const RoomsList: React.FC<RoomsListProps> = ({
     onHotelSelected(hotelId);
   };
 
-  const handleDeleteRoom = async (id: string): Promise<void> => {
+  const handleDeleteRoom = async (
+    id: string,
+    hotelId: string
+  ): Promise<void> => {
     try {
-      await deleteRoom(id);
+      await deleteRoom(id, hotelId);
+      toast.success("Room Deleted!");
       setRooms(rooms.filter((room) => room.id !== id));
     } catch (error) {
       console.error("Failed to delete room:", error);
@@ -51,9 +55,10 @@ const RoomsList: React.FC<RoomsListProps> = ({
   };
 
   const handleAddImage = async (roomId: string): Promise<void> => {
-    if (image) {
+    if (image && selectedHotelId) {
       try {
-        await addImageToHotel(roomId, image);
+        await addImageToRoom(selectedHotelId, roomId, [image]);
+        toast.success("Image Uploaded!");
         setImage(null);
       } catch (error) {
         console.error("Failed to add image:", error);
@@ -139,7 +144,7 @@ const RoomsList: React.FC<RoomsListProps> = ({
                   </div>
 
                   <Button
-                    onClick={() => handleDeleteRoom(room.id)}
+                    onClick={() => handleDeleteRoom(room.id, selectedHotelId)}
                     className="bg-red-500 w-full mt-2"
                     size="sm"
                   >

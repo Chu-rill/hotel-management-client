@@ -7,7 +7,12 @@ interface UseRoomReturnType {
   fetchRoomsByHotelId: (hotelId: string) => Promise<Room[]>;
   createRoom: (roomData: CreateRoomDto) => Promise<Room>;
   updateRoom: (id: string, roomData: Partial<Room>) => Promise<Room>;
-  deleteRoom: (id: string) => Promise<boolean>;
+  deleteRoom: (id: string, hotelId: string) => Promise<boolean>;
+  addImageToRoom: (
+    hotelId: string,
+    roomId: string,
+    files: File[]
+  ) => Promise<Room | null>;
   isLoading: boolean;
   error: string | null;
 }
@@ -106,22 +111,63 @@ const useRoom = (): UseRoomReturnType => {
   );
 
   // Delete a room
-  const deleteRoom = useCallback(async (id: string): Promise<boolean> => {
-    setIsLoading(true);
-    setError(null);
+  const deleteRoom = useCallback(
+    async (id: string, hotelId: string): Promise<boolean> => {
+      setIsLoading(true);
+      setError(null);
 
-    try {
-      await axios.delete(`/api/rooms/${id}`);
-      return true;
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to delete room";
-      setError(errorMessage);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+      try {
+        await axios.delete(`/admin/hotels/${hotelId}/rooms/${id}`);
+        return true;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to delete room";
+        setError(errorMessage);
+        return false;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
+
+  // Add image to room
+  const addImageToRoom = useCallback(
+    async (
+      hotelId: string,
+      roomId: string,
+      files: File[]
+    ): Promise<Room | null> => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const formData = new FormData();
+        files.forEach((file) => {
+          formData.append("files", file);
+        });
+
+        const response = await axios.post(
+          `/admin/hotels/${hotelId}/rooms/${roomId}/images`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        return response.data.data;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to add image to room";
+        setError(errorMessage);
+        return null;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   return {
     fetchRoomById,
@@ -129,6 +175,7 @@ const useRoom = (): UseRoomReturnType => {
     createRoom,
     updateRoom,
     deleteRoom,
+    addImageToRoom,
     isLoading,
     error,
   };
