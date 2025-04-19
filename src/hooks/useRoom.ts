@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react";
 import axios from "./axios";
-import { Room } from "../types";
+import { CreateRoomDto, Room } from "../types";
 
 interface UseRoomReturnType {
   fetchRoomById: (id: string, hotelId: string) => Promise<Room | null>;
   fetchRoomsByHotelId: (hotelId: string) => Promise<Room[]>;
-  createRoom: (roomData: Omit<Room, "id">) => Promise<Room>;
+  createRoom: (roomData: CreateRoomDto) => Promise<Room>;
   updateRoom: (id: string, roomData: Partial<Room>) => Promise<Room>;
   deleteRoom: (id: string) => Promise<boolean>;
   isLoading: boolean;
@@ -61,12 +61,16 @@ const useRoom = (): UseRoomReturnType => {
 
   // Create a new room
   const createRoom = useCallback(
-    async (roomData: Omit<Room, "id">): Promise<Room> => {
+    async (roomData: CreateRoomDto): Promise<Room> => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await axios.post("/api/rooms", roomData);
+        const { hotelId, ...roomDataPayload } = roomData;
+        const response = await axios.post(
+          `/admin/hotels/${hotelId}/rooms`,
+          roomDataPayload
+        );
         return response.data;
       } catch (err) {
         const errorMessage =

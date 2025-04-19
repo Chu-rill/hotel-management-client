@@ -4,6 +4,7 @@ import { useHotel } from "../hooks/useHotel";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Hotel } from "../types/index";
+import { toast } from "sonner";
 
 interface CreateHotelFormProps {
   onHotelCreated: (hotel: Hotel) => void;
@@ -35,7 +36,7 @@ const CreateHotelForm: React.FC<CreateHotelFormProps> = ({
     try {
       const hotel = await createHotel(newHotel);
       onHotelCreated(hotel);
-
+      toast.success("Hotel Created.");
       // Reset form after successful creation
       setNewHotel({
         name: "",

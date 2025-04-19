@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Hotel } from "../types/index";
+import { toast } from "sonner";
 
 interface CreateRoomFormProps {
   hotels: Hotel[];
@@ -23,7 +24,7 @@ type RoomStatus = "AVAILABLE" | "BOOKED" | "MAINTENANCE";
 interface NewRoomForm {
   price: number;
   roomNumber: number;
-  hotel: { id: string } | null;
+  hotelId: string;
   roomtype: RoomType;
   status: RoomStatus;
 }
@@ -36,7 +37,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
   const [newRoom, setNewRoom] = useState<NewRoomForm>({
     price: 0,
     roomNumber: 0,
-    hotel: null,
+    hotelId: selectedHotelId,
     roomtype: "SINGLE",
     status: "AVAILABLE",
   });
@@ -49,13 +50,14 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
 
   const handleCreateRoom = async (): Promise<void> => {
     try {
+      console.log("Creating room with data:", newRoom);
       await createRoom(newRoom);
-
+      toast.success("Room Created.");
       // Reset form after successful creation
       setNewRoom({
         price: 0,
         roomNumber: 0,
-        hotel: { id: selectedHotelId },
+        hotelId: selectedHotelId,
         roomtype: "SINGLE",
         status: "AVAILABLE",
       });
@@ -76,7 +78,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
           <div>
             <label className="block mb-2 text-sm">Hotel</label>
             <Select
-              value={newRoom.hotel?.id || ""}
+              value={selectedHotelId || ""}
               onValueChange={handleHotelChange}
             >
               <SelectTrigger>

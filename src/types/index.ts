@@ -17,6 +17,13 @@ export interface Room {
   amenity?: any[]; // You might want to define a more specific Amenity type
   images?: string[];
 }
+export type CreateRoomDto = {
+  roomType?: RoomType;
+  price: number;
+  status?: string;
+  roomNumber?: number;
+  hotelId?: string;
+};
 export interface RoomNumber {
   _id: string;
   number: number;
