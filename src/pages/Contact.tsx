@@ -34,7 +34,7 @@ const ContactPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Contact Info */}
-          <div className="dark:bg-black p-6 rounded-lg shadow-md space-y-4 border  border-black">
+          <div className="dark:bg-black p-6 rounded-lg shadow-md space-y-4 border ">
             <h2 className="text-2xl font-semibold text-hotel-navy">
               Contact Information
             </h2>
@@ -58,7 +58,7 @@ const ContactPage = () => {
           {/* Contact Form */}
           <form
             onSubmit={handleSubmit}
-            className="dark:bg-black p-6 rounded-lg shadow-md space-y-4"
+            className="dark:bg-black p-6 rounded-lg shadow-md space-y-4 border"
           >
             <h2 className="text-2xl font-semibold text-hotel-navy dark:text-white">
               Send Us a Message
