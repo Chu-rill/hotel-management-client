@@ -24,7 +24,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-hotel-cream">
+    <div className="min-h-screen bg-hotel-cream pt-20">
       <Navbar />
 
       <div className="max-w-6xl mx-auto p-6 py-12">

@@ -3,7 +3,7 @@ import { Button } from "../components/ui/button";
 
 const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-hotel-cream">
+    <div className="min-h-screen bg-hotel-cream pt-20">
       <Navbar />
 
       {/* Hero Section */}
@@ -96,7 +96,7 @@ const AboutPage = () => {
       {/* Vision */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-semibold text-hotel-navy mb-4">
+          <h2 className="dark:text-black text-3xl font-semibold text-hotel-navy mb-4 ">
             Our Vision
           </h2>
           <p className="text-gray-700">
@@ -110,14 +110,14 @@ const AboutPage = () => {
       {/* Call to Action */}
       <section className="py-16 bg-hotel-navy text-white text-center">
         <div className="max-w-4xl mx-auto px-6 space-y-4">
-          <h2 className="text-3xl font-semibold">
+          <h2 className="text-3xl font-semibold text-black dark:text-white">
             Ready to Elevate Your Hotel?
           </h2>
-          <p>
+          <p className="text-black dark:text-white">
             Join hundreds of hoteliers using InnkeeperPro to run smarter, more
             efficient operations.
           </p>
-          <Button className="px-8 py-3 text-lg bg-white text-hotel-navy hover:bg-hotel-gold transition">
+          <Button className="px-8 py-3 text-lg bg-black dark:bg-white text-white dark:text-black  hover:bg-hotel-gold transition">
             Get Started
           </Button>
         </div>

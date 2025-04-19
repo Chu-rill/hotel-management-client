@@ -49,7 +49,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-hotel-cream">
+    <div className="min-h-screen bg-hotel-cream pt-20">
       {/* Navbar */}
       <Navbar />
 
@@ -76,7 +76,7 @@ const HomePage = () => {
       {/* Search Section */}
       <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-6 text-center space-y-4">
-          <h3 className="text-2xl font-semibold text-hotel-navy">
+          <h3 className="text-2xl font-semibold  text-black">
             Find Your Perfect Hotel
           </h3>
           <div className="flex flex-wrap justify-center gap-4">
@@ -146,7 +146,9 @@ const HomePage = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-white">{hotel.description}</p>
+                    <p className="dark:text-white text-black ">
+                      {hotel.description}
+                    </p>
                     {hotel.amenities && (
                       <div className="mt-4">
                         <p className="font-medium mb-1">Amenities:</p>

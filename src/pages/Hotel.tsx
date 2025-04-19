@@ -123,7 +123,7 @@ const HotelDetailsPage = () => {
   // console.log({ hotel,rooms });
 
   return (
-    <div className="min-h-screen bg-hotel-cream">
+    <div className="min-h-screen bg-hotel-cream pt-20">
       <Navbar />
 
       {/* Header Section */}
@@ -132,14 +132,18 @@ const HotelDetailsPage = () => {
           <Button
             variant="outline"
             onClick={handleGoBack}
-            className="mb-4 text-white border-white hover:bg-white hover:text-hotel-navy"
+            className="mb-4 text-black dark:text-white shadow-md shadow-black border-white hover:bg-white hover:text-hotel-navy"
           >
             ← Back to Hotels
           </Button>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div>
-              <h1 className="text-3xl md:text-4xl font-serif">{hotel.name}</h1>
-              <p className="text-lg mt-2">{fullAddress}</p>
+              <h1 className="text-3xl md:text-4xl font-serif text-black dark:text-white">
+                {hotel.name}
+              </h1>
+              <p className="text-lg mt-2 text-black dark:text-white">
+                {fullAddress}
+              </p>
             </div>
             <div className="mt-4 md:mt-0">
               {renderRatingStars(hotel.rating)}

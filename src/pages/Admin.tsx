@@ -129,7 +129,7 @@ const AdminDashboard = () => {
   const selectedHotel = hotels.find((hotel) => hotel.id === viewHotelId);
 
   return (
-    <div className="p-6 grid gap-6">
+    <div className="p-6 grid gap-6 pt-20">
       {/* Navbar */}
       <Navbar />
       <h1 className="text-2xl font-bold">Admin Dashboard</h1>

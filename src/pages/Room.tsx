@@ -149,16 +149,18 @@ const RoomDetailsPage = () => {
           <Button
             variant="outline"
             onClick={handleGoBack}
-            className="mb-4 text-white border-white hover:bg-white hover:text-hotel-navy"
+            className="mb-4 text-black dark:text-white shadow-md shadow-black border-white hover:bg-white hover:text-hotel-navy"
           >
             ← Back to Rooms
           </Button>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
             <div>
-              <h1 className="text-3xl md:text-4xl font-serif">
+              <h1 className="text-3xl md:text-4xl font-serif text-black dark:text-white">
                 {room.roomtype} - Room {room.roomNumber}
               </h1>
-              <p className="text-lg mt-2">{hotel.name}</p>
+              <p className="text-lg mt-2 text-black dark:text-white">
+                {hotel.name}
+              </p>
             </div>
             <div className="mt-4 md:mt-0">
               {/* <Badge variant="outline" className="text-lg border-white text-white px-3 py-1">

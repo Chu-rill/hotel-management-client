@@ -14,7 +14,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-hotel-navy text-white py-4 shadow-lg mt-4">
+    <nav className="bg-white dark:bg-black text-white py-4 shadow-lg fixed w-full z-50 top-0">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="text-2xl font-semibold text-black dark:text-white">
           <span>InnkeeperPro</span>
