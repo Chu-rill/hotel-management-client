@@ -74,7 +74,7 @@ export interface Hotel {
   amenities?: string[];
 }
 
-export interface BookingStatus {
-  VALID: string;
-  EXPIRED: string;
+export enum BookingStatus {
+  VALID = "VALID",
+  CANCELLED = "CANCELLED",
 }

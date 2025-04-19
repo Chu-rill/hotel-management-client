@@ -89,17 +89,20 @@ const RoomDetailsPage = () => {
         return;
       }
 
+      if (!userData) {
+        throw new Error("User must be logged in to make a booking");
+      }
+
       const bookingData = {
         checkIn: new Date(checkInDate),
         checkOut: new Date(checkOutDate),
-        status: "VALID" as unknown as BookingStatus,
-        userId: userData?.id,
+        status: BookingStatus.VALID,
+        userId: userData.id,
         roomId: room.id,
+        hotelId: room.hotel.id,
       };
 
-      console.log("Booking Data:", bookingData);
-
-      await createBooking(bookingData, room.hotel.id);
+      await createBooking(bookingData);
       setBookingStatus("Booking successful!");
       toast.success("Booking successful!,check email for details.");
       // Clear form

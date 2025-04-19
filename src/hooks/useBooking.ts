@@ -26,18 +26,15 @@ interface BookingCreateParams {
   checkIn: Date;
   checkOut: Date;
   status: BookingStatus;
-  userId: string | undefined;
+  userId: string;
   roomId: string;
-  // hotelId: string;
+  hotelId: string;
 }
 
 interface UseBookingReturnType {
   fetchBookingById: (id: string) => Promise<Booking | null>;
   fetchBookingsByHotelId: (hotelId: string) => Promise<Booking[]>;
-  createBooking: (
-    bookingData: BookingCreateParams,
-    hotelId: string
-  ) => Promise<Booking>;
+  createBooking: (bookingData: BookingCreateParams) => Promise<Booking>;
   updateBooking: (
     id: string,
     bookingData: Partial<Booking>
@@ -95,15 +92,22 @@ const useBooking = (): UseBookingReturnType => {
 
   // Create a new booking
   const createBooking = useCallback(
-    async (
-      bookingData: BookingCreateParams,
-      hotelId: string
-    ): Promise<Booking> => {
+    async (bookingData: BookingCreateParams): Promise<Booking> => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await axios.post(`/bookings/${hotelId}`, bookingData);
+        // Extract hotelId for the URL
+        const { hotelId, ...bookingPayload } = bookingData;
+        // Create a new object for the API request
+        // Converting dates to ISO strings for transmission
+        const apiPayload = {
+          ...bookingPayload,
+          checkIn: bookingData.checkIn.toISOString(),
+          checkOut: bookingData.checkOut.toISOString(),
+        };
+
+        const response = await axios.post(`/bookings/${hotelId}`, apiPayload);
         return response.data;
       } catch (err) {
         const errorMessage =
