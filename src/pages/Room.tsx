@@ -36,6 +36,7 @@ const RoomDetailsPage = () => {
   const [hotel, setHotel] = useState<Hotel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isBooking, setIsBooking] = useState(false); // Add loading state for booking
 
   // Booking form state
   const [checkInDate, setCheckInDate] = useState<string>("");
@@ -93,6 +94,8 @@ const RoomDetailsPage = () => {
         throw new Error("User must be logged in to make a booking");
       }
 
+      setIsBooking(true); // Set booking state to true to indicate loading
+
       const bookingData = {
         checkIn: new Date(checkInDate),
         checkOut: new Date(checkOutDate),
@@ -104,7 +107,7 @@ const RoomDetailsPage = () => {
 
       await createBooking(bookingData);
       setBookingStatus("Booking successful!");
-      toast.success("Booking successful!,check email for details.");
+      toast.success("Booking successful! Check email for details.");
       // Clear form
       setCheckInDate("");
       setCheckOutDate("");
@@ -113,6 +116,8 @@ const RoomDetailsPage = () => {
       setBookingStatus("Booking failed. Please try again.");
       toast.error("Booking failed. Please try again.");
       console.error(err);
+    } finally {
+      setIsBooking(false); // Reset booking state regardless of outcome
     }
   };
 
@@ -146,7 +151,7 @@ const RoomDetailsPage = () => {
   // console.log("Room Details:", room);
 
   return (
-    <div className="min-h-screen bg-hotel-cream">
+    <div className="min-h-screen bg-hotel-cream pt-20">
       <Navbar />
 
       {/* Header Section */}
@@ -334,9 +339,11 @@ const RoomDetailsPage = () => {
                     <Button
                       type="submit"
                       className="w-full h-12"
-                      disabled={room.status !== "AVAILABLE"}
+                      disabled={room.status !== "AVAILABLE" || isBooking}
                     >
-                      {room.status === "AVAILABLE"
+                      {isBooking
+                        ? "Booking..."
+                        : room.status === "AVAILABLE"
                         ? "Book Now"
                         : "Room Unavailable"}
                     </Button>

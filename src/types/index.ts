@@ -1,15 +1,15 @@
 export interface User {
-  _id: string;
+  id: string;
   name: string;
   email: string;
-  isAdmin: boolean;
+  role: "ADMIN" | "USER";
   createdAt: string;
   updatedAt: string;
 }
 
 export interface Room {
   id: string;
-  roomNumber: string;
+  roomNumber: number;
   roomtype: string;
   price: number;
   status: string;
@@ -78,3 +78,5 @@ export enum BookingStatus {
   VALID = "VALID",
   CANCELLED = "CANCELLED",
 }
+export type RoomType = "SINGLE" | "DOUBLE" | "SUITE";
+export type RoomStatus = "AVAILABLE" | "BOOKED" | "MAINTENANCE";
