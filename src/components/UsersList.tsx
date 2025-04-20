@@ -1,4 +1,3 @@
-// UsersList.tsx
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -14,69 +13,20 @@ import { Button } from "../components/ui/button";
 import { User } from "../types/index";
 import { Badge } from "../components/ui/badge";
 import { Search } from "lucide-react";
-
-// Create a custom hook for user management
-const useUsers = () => {
-  // In a real application, these would be API calls
-  const fetchAllUsers = async (): Promise<User[]> => {
-    // Mock implementation - replace with actual API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          {
-            id: "1",
-            email: "john@example.com",
-            name: "John Doe",
-            role: "USER",
-          },
-          {
-            id: "2",
-            email: "jane@example.com",
-            name: "Jane Smith",
-            role: "USER",
-          },
-          {
-            id: "3",
-            email: "admin@example.com",
-            name: "Admin User",
-            role: "ADMIN",
-          },
-          {
-            id: "4",
-            email: "guest@example.com",
-            name: "Guest User",
-            role: "USER",
-          },
-          {
-            id: "5",
-            email: "support@example.com",
-            name: "Support Team",
-            role: "ADMIN",
-          },
-        ]);
-      }, 500);
-    });
-  };
-
-  const deleteUser = async (id: string): Promise<void> => {
-    // Mock implementation - replace with actual API call
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log(`User with ID ${id} deleted`);
-        resolve();
-      }, 300);
-    });
-  };
-
-  return { fetchAllUsers, deleteUser };
-};
+import useUser from "../hooks/useUser"; // Import our new hook
+import { toast } from "sonner"; // Assuming you use sonner for toast notifications
 
 interface UsersListProps {
   onUserSelected?: (user: User) => void;
 }
 
 const UsersList: React.FC<UsersListProps> = ({ onUserSelected }) => {
-  const { fetchAllUsers, deleteUser } = useUsers();
+  const {
+    fetchAllUsers,
+    deleteUser,
+    isLoading: isActionLoading,
+    error,
+  } = useUser();
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -87,23 +37,35 @@ const UsersList: React.FC<UsersListProps> = ({ onUserSelected }) => {
       try {
         setIsLoading(true);
         const userData = await fetchAllUsers();
-        setUsers(userData);
-        setFilteredUsers(userData);
+        // Ensure userData is an array before setting state
+        setUsers(Array.isArray(userData) ? userData : []);
+        setFilteredUsers(Array.isArray(userData) ? userData : []);
       } catch (error) {
         console.error("Failed to fetch users:", error);
+        toast.error("Could not load users. Please try again later.");
+        // Set empty arrays on error
+        setUsers([]);
+        setFilteredUsers([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadUsers();
-  }, []);
+  }, [fetchAllUsers]);
+
+  // Show error toast if there's an error from the hook
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     // Filter users based on search term
     const filtered = users.filter(
       (user) =>
-        user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredUsers(filtered);
@@ -111,8 +73,11 @@ const UsersList: React.FC<UsersListProps> = ({ onUserSelected }) => {
 
   const handleDeleteUser = async (id: string) => {
     try {
-      await deleteUser(id);
-      setUsers(users.filter((user) => user.id !== id));
+      const success = await deleteUser(id);
+      if (success) {
+        setUsers(users.filter((user) => user.id !== id));
+        toast.success("User deleted successfully");
+      }
     } catch (error) {
       console.error("Failed to delete user:", error);
     }
@@ -159,7 +124,7 @@ const UsersList: React.FC<UsersListProps> = ({ onUserSelected }) => {
               filteredUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">
-                    {user.name || "N/A"}
+                    {user.username || "N/A"}
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
@@ -177,6 +142,7 @@ const UsersList: React.FC<UsersListProps> = ({ onUserSelected }) => {
                         variant="outline"
                         size="sm"
                         onClick={() => onUserSelected && onUserSelected(user)}
+                        disabled={isActionLoading}
                       >
                         View
                       </Button>
@@ -184,6 +150,7 @@ const UsersList: React.FC<UsersListProps> = ({ onUserSelected }) => {
                         variant="destructive"
                         size="sm"
                         onClick={() => handleDeleteUser(user.id)}
+                        disabled={isActionLoading}
                       >
                         Delete
                       </Button>
