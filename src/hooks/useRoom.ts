@@ -143,6 +143,15 @@ const useRoom = (): UseRoomReturnType => {
 
       try {
         const formData = new FormData();
+        // ADD THE FILE SIZE CHECK HERE, BEFORE CREATING THE FORMDATA
+        files.forEach((file) => {
+          // Check if file size exceeds 5MB (adjust as needed)
+          if (file.size > 5 * 1024 * 1024) {
+            throw new Error(
+              `File ${file.name} exceeds the maximum size limit (5MB)`
+            );
+          }
+        });
         files.forEach((file) => {
           formData.append("files", file);
         });
@@ -153,6 +162,15 @@ const useRoom = (): UseRoomReturnType => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+            },
+            timeout: 60000,
+            onUploadProgress: (progressEvent) => {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) /
+                  (progressEvent.total ?? progressEvent.loaded)
+              );
+              // You can update state here to show progress
+              console.log(`Upload progress: ${percentCompleted}%`);
             },
           }
         );

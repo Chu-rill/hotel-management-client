@@ -137,7 +137,7 @@ const RoomsList: React.FC<RoomsListProps> = ({
                     <Button
                       onClick={() => handleAddImage(room.id)}
                       size="sm"
-                      className="w-full"
+                      className="w-full cursor-pointer hover:bg-blue-600"
                     >
                       Upload Image
                     </Button>

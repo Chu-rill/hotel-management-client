@@ -50,7 +50,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
 
   const handleCreateRoom = async (): Promise<void> => {
     try {
-      console.log("Creating room with data:", newRoom);
+      // console.log("Creating room with data:", newRoom);
       await createRoom(newRoom);
       toast.success("Room Created.");
       // Reset form after successful creation
