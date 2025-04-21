@@ -3,6 +3,8 @@ export interface User {
   username: string;
   email: string;
   role: "ADMIN" | "USER";
+  name?: string;
+  isAdmin?: boolean;
   // createdAt: string;
   // updatedAt: string;
 }
