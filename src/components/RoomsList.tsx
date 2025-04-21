@@ -25,7 +25,8 @@ const RoomsList: React.FC<RoomsListProps> = ({
   selectedHotelId,
   onHotelSelected,
 }) => {
-  const { fetchRoomsByHotelId, deleteRoom, addImageToRoom } = useRoom();
+  const { fetchRoomsByHotelId, deleteRoom, addImageToRoom, isLoading } =
+    useRoom();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [image, setImage] = useState<File | null>(null);
 
@@ -121,7 +122,7 @@ const RoomsList: React.FC<RoomsListProps> = ({
                       Type: {room.roomtype}
                     </p>
                     <p className="text-sm text-gray-600">
-                      Price: ${room.price}/night
+                      Price: ₦{room.price}/night
                     </p>
                     <p className="text-sm text-gray-600">
                       Status: {room.status}
@@ -139,7 +140,7 @@ const RoomsList: React.FC<RoomsListProps> = ({
                       size="sm"
                       className="w-full cursor-pointer hover:bg-blue-600"
                     >
-                      Upload Image
+                      {isLoading ? "Uploading..." : "Upload Image"}
                     </Button>
                   </div>
 

@@ -120,7 +120,7 @@ const HotelDetailsPage = () => {
     .filter(Boolean)
     .join(", ");
 
-  // console.log({ hotel,rooms });
+  // console.log({ hotel, rooms });
 
   return (
     <div className="min-h-screen bg-hotel-cream pt-20">

@@ -25,7 +25,7 @@ interface NewRoomForm {
   price: number;
   roomNumber: number;
   hotelId: string;
-  roomtype: RoomType;
+  roomType: RoomType;
   status: RoomStatus;
 }
 
@@ -33,18 +33,18 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
   hotels,
   selectedHotelId,
 }) => {
-  const { createRoom } = useRoom();
+  const { createRoom, isLoading } = useRoom();
   const [newRoom, setNewRoom] = useState<NewRoomForm>({
     price: 0,
     roomNumber: 0,
     hotelId: selectedHotelId,
-    roomtype: "SINGLE",
+    roomType: "SINGLE",
     status: "AVAILABLE",
   });
 
   useEffect(() => {
     if (selectedHotelId) {
-      setNewRoom((prev) => ({ ...prev, hotel: { id: selectedHotelId } }));
+      setNewRoom((prev) => ({ ...prev, hotelId: selectedHotelId }));
     }
   }, [selectedHotelId]);
 
@@ -58,7 +58,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
         price: 0,
         roomNumber: 0,
         hotelId: selectedHotelId,
-        roomtype: "SINGLE",
+        roomType: "SINGLE",
         status: "AVAILABLE",
       });
     } catch (error) {
@@ -67,7 +67,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
   };
 
   const handleHotelChange = (hotelId: string): void => {
-    setNewRoom((prev) => ({ ...prev, hotel: { id: hotelId } }));
+    setNewRoom((prev) => ({ ...prev, hotelId: hotelId }));
   };
 
   return (
@@ -78,7 +78,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
           <div>
             <label className="block mb-2 text-sm">Hotel</label>
             <Select
-              value={selectedHotelId || ""}
+              value={newRoom.hotelId || ""}
               onValueChange={handleHotelChange}
             >
               <SelectTrigger>
@@ -127,9 +127,9 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
           <div>
             <label className="block mb-2 text-sm">Room Type</label>
             <Select
-              value={newRoom.roomtype}
+              value={newRoom.roomType}
               onValueChange={(value: RoomType) =>
-                setNewRoom({ ...newRoom, roomtype: value })
+                setNewRoom({ ...newRoom, roomType: value })
               }
             >
               <SelectTrigger>
@@ -164,7 +164,7 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({
         </div>
 
         <Button onClick={handleCreateRoom} className="mt-2">
-          Create Room
+          {isLoading ? "Creating..." : "Create Room"}
         </Button>
       </div>
     </section>
