@@ -6,7 +6,7 @@ import CreateHotelForm from "../components/CreateHotelForm";
 import CreateRoomForm from "../components/CreateRoomForm";
 import HotelsList from "../components/HotelsList";
 import RoomsList from "../components/RoomsList";
-// import UsersList from "../components/UsersList";
+import UsersList from "../components/UsersList";
 import {
   Tabs,
   TabsContent,
@@ -85,7 +85,7 @@ const AdminDashboard: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="users">
-          {/* <UsersList onUserSelected={handleUserSelected} /> */}
+          <UsersList />
         </TabsContent>
       </Tabs>
     </div>
