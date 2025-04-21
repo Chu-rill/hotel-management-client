@@ -22,7 +22,7 @@ import useHotel from "../hooks/useHotel";
 const HomePage = () => {
   const navigate = useNavigate();
   const { authUser } = useAuthContext();
-  const [userData, setUserData] = useState(authUser);
+  const [userData] = useState(authUser);
   const { loading, hotels, error } = useHotel();
   const [searchQuery, setSearchQuery] = useState("");
   const [priceFilter, setPriceFilter] = useState("");

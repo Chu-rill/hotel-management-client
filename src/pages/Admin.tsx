@@ -6,20 +6,20 @@ import CreateHotelForm from "../components/CreateHotelForm";
 import CreateRoomForm from "../components/CreateRoomForm";
 import HotelsList from "../components/HotelsList";
 import RoomsList from "../components/RoomsList";
-import UsersList from "../components/UsersList";
+// import UsersList from "../components/UsersList";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import { Hotel, User } from "../types/index";
+import { Hotel } from "../types/index";
 
 const AdminDashboard: React.FC = () => {
   const { getAllHotels } = useHotel();
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [selectedHotelId, setSelectedHotelId] = useState<string>("");
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  // const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
     getAllHotels().then((hotelsData: Hotel[]) => {
@@ -44,11 +44,11 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleUserSelected = (user: User) => {
-    setSelectedUser(user);
-    // You could also switch to a user detail tab or open a modal here
-    console.log("Selected user:", user);
-  };
+  // const handleUserSelected = (user: User) => {
+  //   setSelectedUser(user);
+  //   // You could also switch to a user detail tab or open a modal here
+  //   console.log("Selected user:", user);
+  // };
 
   return (
     <div className="p-6 grid gap-6 pt-20">
@@ -85,7 +85,7 @@ const AdminDashboard: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="users">
-          <UsersList onUserSelected={handleUserSelected} />
+          {/* <UsersList onUserSelected={handleUserSelected} /> */}
         </TabsContent>
       </Tabs>
     </div>

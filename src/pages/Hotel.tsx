@@ -30,7 +30,7 @@ const HotelDetailsPage = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
+  // const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,9 +40,9 @@ const HotelDetailsPage = () => {
         // Fetch hotel details
         const hotelData = await fetchHotelById(hotelId);
         setHotel(hotelData);
-        if (hotelData?.imageUrl) {
-          setSelectedImage(hotelData.imageUrl);
-        }
+        // if (hotelData?.imageUrl) {
+        //   setSelectedImage(hotelData.imageUrl);
+        // }
 
         // Fetch rooms for this hotel
         if (hotelId) {

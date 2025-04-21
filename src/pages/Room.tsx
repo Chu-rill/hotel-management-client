@@ -41,7 +41,7 @@ const RoomDetailsPage = () => {
   // Booking form state
   const [checkInDate, setCheckInDate] = useState<string>("");
   const [checkOutDate, setCheckOutDate] = useState<string>("");
-  const [guests, setGuests] = useState<string>("1");
+  // const [guests, setGuests] = useState<string>("1");
   const [bookingStatus, setBookingStatus] = useState<string>("");
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const RoomDetailsPage = () => {
       // Clear form
       setCheckInDate("");
       setCheckOutDate("");
-      setGuests("1");
+      // setGuests("1");
     } catch (err) {
       setBookingStatus("Booking failed. Please try again.");
       toast.error("Booking failed. Please try again.");
