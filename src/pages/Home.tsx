@@ -6,14 +6,14 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Input } from "../components/ui/input";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "../components/ui/select";
+// import { Input } from "../components/ui/input";
+// import {
+//   Select,
+//   SelectTrigger,
+//   SelectValue,
+//   SelectContent,
+//   SelectItem,
+// } from "../components/ui/select";
 import Navbar from "../components/NavBar";
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
@@ -24,8 +24,8 @@ const HomePage = () => {
   const { authUser } = useAuthContext();
   const [userData] = useState(authUser);
   const { loading, hotels, error } = useHotel();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [priceFilter, setPriceFilter] = useState("");
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [priceFilter, setPriceFilter] = useState("");
 
   // Fixed the parameter bug: it should be hotelId, not hotels
   const handleViewHotel = (hotelId: string) => {
@@ -74,7 +74,7 @@ const HomePage = () => {
       </div>
 
       {/* Search Section */}
-      <div className="py-12 bg-white">
+      {/* <div className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-6 text-center space-y-4">
           <h3 className="text-2xl font-semibold  text-black">
             Find Your Perfect Hotel
@@ -100,7 +100,7 @@ const HomePage = () => {
             <Button className="h-10 px-8">Search</Button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Hotels Listing Section */}
       <div className="py-12 bg-hotel-cream">
