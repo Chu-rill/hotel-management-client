@@ -4,10 +4,11 @@ import { ThemeToggle } from "./ThemeToggle";
 import { toast } from "sonner";
 import { BiLogOut } from "react-icons/bi";
 import { HiMenu, HiX } from "react-icons/hi";
+import { useAuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const { authUser } = useAuthContext();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -50,12 +51,14 @@ const Navbar = () => {
           >
             Home
           </Link>
-          <Link
-            to="/admin"
-            className="hover:text-hotel-cream text-black dark:text-white"
-          >
-            Admin
-          </Link>
+          {authUser?.role === "admin" && (
+            <Link
+              to="/admin"
+              className="hover:text-hotel-cream text-black dark:text-white"
+            >
+              Admin
+            </Link>
+          )}
           <Link
             to="/about"
             className="hover:text-hotel-cream text-black dark:text-white"

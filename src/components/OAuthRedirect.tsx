@@ -17,6 +17,7 @@ const OAuthRedirect = () => {
         id: decodedToken.id,
         userName: decodedToken.username,
         email: decodedToken.email,
+        role: decodedToken.role,
       }; // Map fields to match AuthUser type
 
       localStorage.setItem("user", JSON.stringify(authUser));

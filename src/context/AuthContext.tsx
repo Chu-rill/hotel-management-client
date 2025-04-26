@@ -13,6 +13,7 @@ export interface AuthUser {
   id: string;
   userName: string;
   email: string;
+  role: any;
   // Add more fields if your user object has more properties
 }
 
